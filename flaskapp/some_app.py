@@ -1,13 +1,14 @@
-print("Hello, world!")
-
+print("Hello, world! from printf")
 
 from flask import Flask
-app=Flask(__name__)
 
-#dec to print
+app = Flask(__name__)
+
+
+# dec to print
 @app.route("/")
 def hello():
-    return "<html><head></head><bodu>Hello World </body></html>"
+    return "<html><head></head><body>Hello World from some_app</body></html>"
 
 
 if __name__ == "__main__":

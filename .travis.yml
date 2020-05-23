@@ -1,7 +1,7 @@
 language: python 
 
 before_onstall:
-  -chmod +x ./flaskapp/st.sh
+  - chmod +x ./flaskapp/st.sh
 
 install:
   - pip3 install flask

@@ -11,6 +11,7 @@ install:
   - pip3 install pillow
   - pip3 install tensorflow==2.0.0-alpha0
   - pip3 install keras
+  - pip3 install lxml
 
 script:
   - cd flaskapp

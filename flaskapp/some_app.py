@@ -93,8 +93,10 @@ def apinet():
         data = request.get_json()
         # берем содержимое по ключу, где хранится файл # закодированный строкой base64
         # декодируем строку в массив байт используя кодировку utf-8
-        # первые 128 байт ascii и utf-8 совпадают, потому можно filebytes = data['imagebin'].encode('utf-8')
-        # декодируем массив байт base64 в исходный файл изображение cfile = base64.b64decode(filebytes)
+        # первые 128 байт ascii и utf-8 совпадают, потому можно
+        filebytes = data['imagebin'].encode('utf-8')
+        # декодируем массив байт base64 в исходный файл изображение
+        cfile = base64.b64decode(filebytes)
         # чтобы считать изображение как файл из памяти используем BytesIO
         img = Image.open(BytesIO(cfile))
         decode = neuronet.getresult([img])

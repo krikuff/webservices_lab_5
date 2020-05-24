@@ -119,7 +119,6 @@ def apinet():
 
 import lxml.etree as ET
 
-
 @app.route("/apixml",methods=['GET', 'POST'])
 def apixml():
     #парсим xml файл в dom

@@ -120,7 +120,8 @@ def apinet():
 import lxml.etree as ET
 
 
-@app.route("/apixml",methods=['GET', 'POST']) def apixml():
+@app.route("/apixml",methods=['GET', 'POST'])
+def apixml():
     #парсим xml файл в dom
     dom = ET.parse("./static/xml/file.xml") #парсим шаблон в dom
     xslt = ET.parse("./static/xml/file.xslt") #получаем трансформер

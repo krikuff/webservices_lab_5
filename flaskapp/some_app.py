@@ -27,6 +27,7 @@ app.config['RECAPTCHA_USE_SSL'] = False
 app.config['RECAPTCHA_PUBLIC_KEY'] = '6LewZvsUAAAAAP8ftBu1PhFkI5RTayByO83wbV0C'
 app.config['RECAPTCHA_PRIVATE_KEY'] = '6LewZvsUAAAAANbjfnDQ-mTr77JZDSqaJSEQ8lM_'
 app.config['RECAPTCHA_OPTIONS'] = {'theme': 'white'}
+app.config['SECRET_KEY'] = 'secret'
 
 
 # создаем форму для загрузки файла

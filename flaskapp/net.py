@@ -39,7 +39,7 @@ input_shape=None, pooling=None, classes=1000)
 # учтите если там есть файлы не соответствующие изображениям или каталоги
 # возникнет ошибка
 def read_image_files(files_max_count,dir_name):
-    files = os.listdir(dir_name)
+    files = [item.name for item in os.scandir(dir_name) if item.is_file()]
     files_count = files_max_count
     if(files_max_count>len(files)): # определяем количество файлов не больше max
         files_count = len(files)

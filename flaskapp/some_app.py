@@ -135,7 +135,7 @@ def sin_calc():
     plt.plot(xs, ys)
     plt.savefig(res_path)
 
-    return render_template('sin.html', form=form, image_path=res_path)
+    return render_template('sin.html', form=form, img_url=res_path)
 
     
 

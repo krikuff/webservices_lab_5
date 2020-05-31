@@ -112,28 +112,31 @@ import matplotlib.pyplot as plt
 def sin_calc():
     form = SinForm()
 
-    phase = float(form.phase.data)
-    amplitude = float(form.amplitude.data)
-    frequency = float(form.rate.data)
-    high = float(form.range_from.data)
-    low = float(form.range_to.data)
-    points_cnt = float(form.points_amount.data)
-    
-    xs = []
-    ys = []
+    res_path = None
 
-    step = (high - low) / points_cnt
-    x = low
+    if form.validate_on_submit():
+        phase = float(form.phase.data)
+        amplitude = float(form.amplitude.data)
+        frequency = float(form.rate.data)
+        high = float(form.range_from.data)
+        low = float(form.range_to.data)
+        points_cnt = float(form.points_amount.data)
+        
+        xs = []
+        ys = []
 
-    while x <= high:
-        xs.append(x)
-        ys.append(sin(frequency * x + phase))
-        x += step
+        step = (high - low) / points_cnt
+        x = low
 
-    res_path = './static/graph'
-    
-    plt.plot(xs, ys)
-    plt.savefig(res_path)
+        while x <= high:
+            xs.append(x)
+            ys.append(sin(frequency * x + phase))
+            x += step
+
+        res_path = './static/graph'
+        
+        plt.plot(xs, ys)
+        plt.savefig(res_path)
 
     return render_template('sin.html', form=form, img_url=res_path)
 

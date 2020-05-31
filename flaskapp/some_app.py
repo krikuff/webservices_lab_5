@@ -21,14 +21,14 @@ def data_to():
 
 
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, FloatField, SelectField
 
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 app.config['RECAPTCHA_USE_SSL'] = False
-app.config['RECAPTCHA_PUBLIC_KEY'] = '6LewZvsUAAAAAP8ftBu1PhFkI5RTayByO83wbV0C'
-app.config['RECAPTCHA_PRIVATE_KEY'] = '6LewZvsUAAAAANbjfnDQ-mTr77JZDSqaJSEQ8lM_'
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6LcXn_sUAAAAAEbvg1fqCMPOA_pgZiVcteIA9wCy'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcXn_sUAAAAAPnsHebESwEcexSbONmIPTcIHVPS'
 app.config['RECAPTCHA_OPTIONS'] = {'theme': 'white'}
 app.config['SECRET_KEY'] = 'secret'
 
@@ -50,6 +50,21 @@ class NetForm(FlaskForm):
     # кнопка submit, для пользователя отображена как send
     submit = SubmitField('send')
 
+class SinForm(FlaskForm):
+    # Фаза
+    phase = FloatField('Фаза')
+    # Амплитуда
+    amplitude = FloatField('Амплитуда')
+    # Частота
+    rate = FloatField('Частота')
+    # Диапазон
+    range_from = FloatField('От:')
+    range_to = FloatField('До: ')
+
+    # Формат вывода
+    output_select = SelectField('Выбор вывода:', choices=[('txt','Текстовый список'), ('html','HTML-таблица'), ('md','Markdown-таблица')])
+
+    submit = SubmitField('Отправить')
 
 # функция обработки запросов на адрес 127.0.0.1:5000/net
 # модуль проверки и преобразование имени файла

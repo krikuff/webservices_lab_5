@@ -60,6 +60,8 @@ class SinForm(FlaskForm):
     range_from = FloatField('От:')
     range_to = FloatField('До: ')
 
+    points_amount = IntegerField('Количество точек')
+
     # Формат вывода
     output_select = SelectField('Выбор вывода:', choices=[('txt','Текстовый список'), ('html','HTML-таблица'), ('md','Markdown-таблица')])
 
@@ -101,6 +103,41 @@ def net():
     # сети если был нажат сабмит, либо передадим falsy значения
     return render_template('net.html', form=form, image_name=filename, neurodic=neurodic)
 
+import lxml.etree as ET
+from math import sin
+from lxml.builder import E
+import matplotlib.pyplot as plt
+
+@app.route("/sin", methods=['POST'])
+def sin_calc():
+    form = SinForm()
+
+    phase = form.phase
+    amplitude = form.amplitude
+    frequency = form.rate
+    high = form.range_from
+    low = form.range_to
+    points_cnt = form.points_amount
+    
+    xs = []
+    ys = []
+
+    step = (high - low) / points_cnt
+    x = low
+
+    while x <= high:
+        xs.append(x)
+        ys.append(sin(frequency * x + phase))
+        x += step
+
+    res_path = './static/graph'
+    
+    plt.plot(xs, ys)
+    plt.savefig(res_path)
+
+    return render_template('sin.html', form=form, img_url=res_path)
+
+    
 
 from flask import request
 from flask import Response
@@ -108,7 +145,6 @@ import base64
 from PIL import Image
 from io import BytesIO
 import json
-
 
 # метод для обработки запроса от пользователя
 @app.route("/apinet", methods=['GET', 'POST'])
@@ -142,10 +178,6 @@ def apinet():
                     mimetype="application/json")
     # возвращаем ответ
     return resp
-
-
-import lxml.etree as ET
-
 
 @app.route("/apixml", methods=['GET', 'POST'])
 def apixml():

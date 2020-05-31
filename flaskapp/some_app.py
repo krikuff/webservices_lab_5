@@ -20,7 +20,7 @@ def data_to():
 
 
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, FloatField, SelectField
 
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed, FileRequired
@@ -49,6 +49,21 @@ class NetForm(FlaskForm):
     # кнопка submit, для пользователя отображена как send
     submit = SubmitField('send')
 
+class SinForm(FlaskForm):
+    # Фаза
+    phase = FloatField('Фаза')
+    # Амплитуда
+    amplitude = FloatField('Амплитуда')
+    # Частота
+    rate = FloatField('Частота')
+    # Диапазон
+    range_from = FloatField('От:')
+    range_to = FloatField('До: ')
+
+    # Формат вывода
+    output_select = SelectField('Выбор вывода:', choices=[('txt','Текстовый список'), ('html','HTML-таблица'), ('md','Markdown-таблица')])
+
+    submit = SubmitField('Отправить')
 
 # функция обработки запросов на адрес 127.0.0.1:5000/net
 # модуль проверки и преобразование имени файла

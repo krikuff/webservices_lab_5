@@ -5,6 +5,6 @@
 
 {{ wtf.quick_form(form, method='post', enctype="multipart/form-data",action="sin") }}
     <h2>Result:</h2>
-{{ if img_url }}
+{% if img_url %}
     <img src="{{ img_url }}">
 {% endblock %}

@@ -135,7 +135,7 @@ def sin_calc():
             ys.append(sin(frequency * x + phase))
             x += step
 
-        res_path = './static/graph'
+        res_path = './static/graph.png'
         
         plt.plot(xs, ys)
         plt.savefig(res_path)

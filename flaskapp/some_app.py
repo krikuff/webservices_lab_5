@@ -1,3 +1,4 @@
+import matplotlib
 from flask_bootstrap import Bootstrap
 from flask import Flask
 
@@ -9,7 +10,7 @@ if __name__ == "__main__":
 
 from flask import render_template
 
-
+  
 
 @app.route("/data_to")
 def data_to():
@@ -134,7 +135,7 @@ def sin_calc():
             ys.append(sin(frequency * x + phase))
             x += step
 
-        res_path = './static/graph'
+        res_path = './static/graph.png'
         
         plt.plot(xs, ys)
         plt.savefig(res_path)
@@ -194,7 +195,8 @@ def apixml():
     # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
     strfile = ET.tostring(newhtml)
     return strfile
-
+  
+ 
 import cv2
 import os
 from matplotlib import pyplot as plt

@@ -112,12 +112,12 @@ import matplotlib.pyplot as plt
 def sin_calc():
     form = SinForm()
 
-    phase = float(form.phase)
-    amplitude = float(form.amplitude)
-    frequency = float(form.rate)
-    high = float(form.range_from)
-    low = float(form.range_to)
-    points_cnt = float(form.points_amount)
+    phase = float(form.phase.data)
+    amplitude = float(form.amplitude.data)
+    frequency = float(form.rate.data)
+    high = float(form.range_from.data)
+    low = float(form.range_to.data)
+    points_cnt = float(form.points_amount.data)
     
     xs = []
     ys = []

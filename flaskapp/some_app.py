@@ -20,7 +20,7 @@ def data_to():
 
 
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, SubmitField, FloatField, SelectField
+from wtforms import StringField, SubmitField, FloatField, SelectField, IntegerField
 
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed, FileRequired
@@ -108,7 +108,7 @@ from math import sin
 from lxml.builder import E
 import matplotlib.pyplot as plt
 
-@app.route("/sin", methods=['POST'])
+@app.route("/sin", methods=['POST', 'GET'])
 def sin_calc():
     form = SinForm()
 

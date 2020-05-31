@@ -108,7 +108,7 @@ from math import sin
 from lxml.builder import E
 import matplotlib.pyplot as plt
 
-@app.route("/sin", methods=['POST'])
+@app.route("/sin", methods=['POST', 'GET'])
 def sin_calc():
     form = SinForm()
 

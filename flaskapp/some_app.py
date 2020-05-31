@@ -1,10 +1,15 @@
+from flask_bootstrap import Bootstrap
 from flask import Flask
+
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)
 
 from flask import render_template
+
+
 @app.route("/data_to")
 def data_to():
     some_pars = {'user': 'Ivan', 'color': 'red'}
@@ -21,9 +26,11 @@ from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 app.config['RECAPTCHA_USE_SSL'] = False
-app.config['RECAPTCHA_PUBLIC_KEY'] ='6LewZvsUAAAAAP8ftBu1PhFkI5RTayByO83wbV0C'
-app.config['RECAPTCHA_PRIVATE_KEY'] ='6LewZvsUAAAAANbjfnDQ-mTr77JZDSqaJSEQ8lM_'
-app.config['RECAPTCHA_OPTIONS'] = {'theme':'white'}
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6LcXn_sUAAAAAEbvg1fqCMPOA_pgZiVcteIA9wCy'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcXn_sUAAAAAPnsHebESwEcexSbONmIPTcIHVPS'
+app.config['RECAPTCHA_OPTIONS'] = {'theme': 'white'}
+app.config['SECRET_KEY'] = 'secret'
+
 
 # создаем форму для загрузки файла
 class NetForm(FlaskForm):
@@ -31,16 +38,17 @@ class NetForm(FlaskForm):
     # валидатор проверяет введение данных после нажатия кнопки submit
     # и указывает пользователю ввести данные если они не введены
     # или неверны
-    openid = StringField('openid', validators = [DataRequired()])
+    openid = StringField('openid', validators=[DataRequired()])
     # поле загрузки файла
     # здесь валидатор укажет ввести правильные файлы
     upload = FileField('Load image', validators=[
-    FileRequired(),
-    FileAllowed(['jpg','png','jpeg'],'Images only!')])
+        FileRequired(),
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     # поле формы с capture
     recaptcha = RecaptchaField()
-    #кнопка submit, для пользователя отображена как send
+    # кнопка submit, для пользователя отображена как send
     submit = SubmitField('send')
+
 
 # функция обработки запросов на адрес 127.0.0.1:5000/net
 # модуль проверки и преобразование имени файла
@@ -50,19 +58,21 @@ import os
 # подключаем наш модуль и переименовываем
 # для исключения конфликта имен
 import net as neuronet
+
+
 # метод обработки запроса GET и POST от клиента
-@app.route("/net",methods=['GET','POST'])
+@app.route("/net", methods=['GET', 'POST'])
 def net():
     # создаем объект формы
     form = NetForm()
     # обнуляем переменные передаваемые в форму
-    filename=None
+    filename = None
     neurodic = {}
     # проверяем нажатие сабмит и валидацию введенных данных
     if form.validate_on_submit():
         # файлы с изображениями читаются из каталога static
         filename = os.path.join('./static', secure_filename(form.upload.data.filename))
-        fcount, fimage = neuronet.read_image_files(10,'./static')
+        fcount, fimage = neuronet.read_image_files(10, './static')
         # передаем все изображения в каталоге на классификацию
         # можете изменить немного код и передать только загруженный файл
         decode = neuronet.getresult(fimage)
@@ -74,7 +84,8 @@ def net():
         form.upload.data.save(filename)
     # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
     # сети если был нажат сабмит, либо передадим falsy значения
-    return render_template('net.html',form=form,image_name=filename,neurodic=neurodic)
+    return render_template('net.html', form=form, image_name=filename, neurodic=neurodic)
+
 
 from flask import request
 from flask import Response
@@ -85,7 +96,7 @@ import json
 
 
 # метод для обработки запроса от пользователя
-@app.route("/apinet",methods=['GET', 'POST'])
+@app.route("/apinet", methods=['GET', 'POST'])
 def apinet():
     # проверяем что в запросе json данные
     if request.mimetype == 'application/json':
@@ -112,7 +123,23 @@ def apinet():
     ret = json.dumps(neurodic)
     # готовим ответ пользователю
     resp = Response(response=ret,
-    status=200,
-    mimetype="application/json")
+                    status=200,
+                    mimetype="application/json")
     # возвращаем ответ
     return resp
+
+
+import lxml.etree as ET
+
+
+@app.route("/apixml", methods=['GET', 'POST'])
+def apixml():
+    # парсим xml файл в dom
+    dom = ET.parse("./static/xml/file.xml")  # парсим шаблон в dom
+    xslt = ET.parse("./static/xml/file.xslt")  # получаем трансформер
+    transform = ET.XSLT(xslt)
+    # преобразуем xml с помощью трансформера xslt
+    newhtml = transform(dom)
+    # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+    strfile = ET.tostring(newhtml)
+    return strfile

@@ -36,3 +36,8 @@ try:
     print(r.text)
 except:
     exit(1)
+
+# запрос к синусу
+r = requests.get('http://localhost:5000/sin')
+print(r.status_code)
+print(r.text)

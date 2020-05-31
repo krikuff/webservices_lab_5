@@ -10,6 +10,7 @@ if __name__ == "__main__":
 
 from flask import render_template
 
+  
 
 @app.route("/data_to")
 def data_to():
@@ -21,7 +22,7 @@ def data_to():
 
 
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, SubmitField, FloatField, SelectField
+from wtforms import StringField, SubmitField, FloatField, SelectField, IntegerField
 
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed, FileRequired
@@ -60,6 +61,8 @@ class SinForm(FlaskForm):
     # Диапазон
     range_from = FloatField('От:')
     range_to = FloatField('До: ')
+
+    points_amount = IntegerField('Количество точек')
 
     # Формат вывода
     output_select = SelectField('Выбор вывода:', choices=[('txt','Текстовый список'), ('html','HTML-таблица'), ('md','Markdown-таблица')])
@@ -102,6 +105,44 @@ def net():
     # сети если был нажат сабмит, либо передадим falsy значения
     return render_template('net.html', form=form, image_name=filename, neurodic=neurodic)
 
+import lxml.etree as ET
+from math import sin
+from lxml.builder import E
+import matplotlib.pyplot as plt
+
+@app.route("/sin", methods=['POST', 'GET'])
+def sin_calc():
+    form = SinForm()
+
+    res_path = None
+
+    if form.validate_on_submit():
+        phase = float(form.phase.data)
+        amplitude = float(form.amplitude.data)
+        frequency = float(form.rate.data)
+        high = float(form.range_from.data)
+        low = float(form.range_to.data)
+        points_cnt = float(form.points_amount.data)
+        
+        xs = []
+        ys = []
+
+        step = (high - low) / points_cnt
+        x = low
+
+        while x <= high:
+            xs.append(x)
+            ys.append(sin(frequency * x + phase))
+            x += step
+
+        res_path = './static/graph'
+        
+        plt.plot(xs, ys)
+        plt.savefig(res_path)
+
+    return render_template('sin.html', form=form, img_url=res_path)
+
+    
 
 from flask import request
 from flask import Response
@@ -109,7 +150,6 @@ import base64
 from PIL import Image
 from io import BytesIO
 import json
-
 
 # метод для обработки запроса от пользователя
 @app.route("/apinet", methods=['GET', 'POST'])
@@ -143,10 +183,6 @@ def apinet():
                     mimetype="application/json")
     # возвращаем ответ
     return resp
-
-
-import lxml.etree as ET
-
 
 @app.route("/apixml", methods=['GET', 'POST'])
 def apixml():

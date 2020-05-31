@@ -13,13 +13,13 @@ import base64
 
 
 img_data = None
-# создаем путь к файлу (для кроссплатформенности, например)
+# создаем путь к файлу (для кроссплатформенности, например)
 path = os.path.join('./static', 'image0008.png')
-# читаем файл и енкодируем его в строку base64
+# читаем файл и енкодируем его в строку base64
 with open(path, 'rb') as fh:
     img_data = fh.read()
     b64 = base64.b64encode(img_data)
-# создаем json словарь, который
+# создаем json словарь, который
 # отправляется на сервер в виде json строки
 # преобразование делает сама функция отправки запроса post
 jsondata = {'imagebin':b64.decode('utf-8')}
@@ -37,6 +37,10 @@ try:
 except:
     exit(1)
 
+# запрос к синусу
+r = requests.get('http://localhost:5000/sin')
+print(r.status_code)
+print(r.text)
 
 try:
     r = requests.get('http://localhost:5000/imgfilter')

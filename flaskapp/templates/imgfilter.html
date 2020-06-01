@@ -7,11 +7,12 @@
 {{ wtf.quick_form(form, method='post', enctype="multipart/form-data",action="imgfilter" )}}
 
 <h2>Image is here: </h2>
-<!-- отображаем загруженное изображение с закругленными углами -->
-<!-- если оно есть (после submit) -->
+
 {% if image_name %}
-    <p>{{image_name}}
-    <p><img src={{image_name}} class="img-rounded" alt="My Image" width = 224 height=224 />
+    <p>{{image_name1}}
+    <p><img src={{image_name1}} class="img-rounded" alt="origin" width = 224 height=224 />
+    <p>{{image_name2}}
+    <p><img src={{image_name2}} class="img-rounded" alt="median filter" width = 224 height=224 />
 {% else %}
     <p> There is no image yet </p>
 {% endif %}

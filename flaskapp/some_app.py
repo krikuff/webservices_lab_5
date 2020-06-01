@@ -140,7 +140,12 @@ def sin_calc():
         plt.plot(xs, ys)
         plt.savefig(res_path)
 
-    return render_template('sin.html', form=form, img_url=res_path)
+    tmpl = render_template('sin.html', form=form, img_url=res_path)
+
+    os.remove('./static/graph.png')
+
+
+    return tmpl
 
     
 

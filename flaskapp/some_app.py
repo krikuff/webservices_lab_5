@@ -120,8 +120,8 @@ def sin_calc():
         phase = float(form.phase.data)
         amplitude = float(form.amplitude.data)
         frequency = float(form.rate.data)
-        high = float(form.range_from.data)
-        low = float(form.range_to.data)
+        high = float(form.range_to.data)
+        low = float(form.range_from.data)
         points_cnt = float(form.points_amount.data)
         
         xs = []
@@ -137,6 +137,7 @@ def sin_calc():
 
         res_path = './static/graph.png'
         
+        plt.clf()
         plt.plot(xs, ys)
         plt.savefig(res_path)
 
@@ -158,20 +159,20 @@ def apinet():
     if request.mimetype == 'application/json':
         # получаем json данные
         data = request.get_json()
-        # берем содержимое по ключу, где хранится файл # закодированный строкой base64
-        # декодируем строку в массив байт используя кодировку utf-8
-        # первые 128 байт ascii и utf-8 совпадают, потому можно
+        # берем содержимое по ключу, где хранится файл # закодированный строкой base64
+        # декодируем строку в массив байт используя кодировку utf-8
+        # первые 128 байт ascii и utf-8 совпадают, потому можно
         filebytes = data['imagebin'].encode('utf-8')
-        # декодируем массив байт base64 в исходный файл изображение
+        # декодируем массив байт base64 в исходный файл изображение
         cfile = base64.b64decode(filebytes)
-        # чтобы считать изображение как файл из памяти используем BytesIO
+        # чтобы считать изображение как файл из памяти используем BytesIO
         img = Image.open(BytesIO(cfile))
         decode = neuronet.getresult([img])
         neurodic = {}
         for elem in decode:
             neurodic[elem[0][1]] = str(elem[0][2])
             print(elem)
-        # пример сохранения переданного файла
+        # пример сохранения переданного файла
         # handle = open('./static/f.png','wb')
         # handle.write(cfile)
         # handle.close()
@@ -186,7 +187,7 @@ def apinet():
 
 @app.route("/apixml", methods=['GET', 'POST'])
 def apixml():
-    # парсим xml файл в dom
+    # парсим xml файл в dom
     dom = ET.parse("./static/xml/file.xml")  # парсим шаблон в dom
     xslt = ET.parse("./static/xml/file.xslt")  # получаем трансформер
     transform = ET.XSLT(xslt)
@@ -196,7 +197,6 @@ def apixml():
     strfile = ET.tostring(newhtml)
     return strfile
   
- 
 
 import os
 from matplotlib import pyplot as plt
@@ -221,4 +221,3 @@ def imgfilter():
     # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
     # сети если был нажат сабмит, либо передадим falsy значения
     return render_template('imgfilter.html', form=form, image_name1=filename1, image_name2=filename2,)
-

@@ -42,11 +42,11 @@ r = requests.get('http://localhost:5000/sin')
 print(r.status_code)
 print(r.text)
 
-try:
-    r = requests.get('http://localhost:5000/imgfilter')
-    print(r.status_code)
-    if(r.status_code!=200):
-        exit(1)
-    print(r.text)
-except:
-    exit(1)
+# try:
+#     r = requests.get('http://localhost:5000/imgfilter')
+#     print(r.status_code)
+#     if(r.status_code!=200):
+#         exit(1)
+#     print(r.text)
+# except:
+#     exit(1)

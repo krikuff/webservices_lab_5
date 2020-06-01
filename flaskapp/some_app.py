@@ -120,8 +120,8 @@ def sin_calc():
         phase = float(form.phase.data)
         amplitude = float(form.amplitude.data)
         frequency = float(form.rate.data)
-        high = float(form.range_from.data)
-        low = float(form.range_to.data)
+        high = float(form.range_to.data)
+        low = float(form.range_from.data)
         points_cnt = float(form.points_amount.data)
         
         xs = []

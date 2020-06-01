@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
 from flask import render_template
 
-  
+
 
 @app.route("/data_to")
 def data_to():
@@ -120,8 +120,8 @@ def sin_calc():
         phase = float(form.phase.data)
         amplitude = float(form.amplitude.data)
         frequency = float(form.rate.data)
-        high = float(form.range_from.data)
-        low = float(form.range_to.data)
+        high = float(form.range_to.data)
+        low = float(form.range_from.data)
         points_cnt = float(form.points_amount.data)
         
         xs = []
@@ -137,10 +137,38 @@ def sin_calc():
 
         res_path = './static/graph.png'
         
+        plt.clf()
         plt.plot(xs, ys)
         plt.savefig(res_path)
 
-    return render_template('sin.html', form=form, img_url=res_path)
+
+        selected_output = None
+        xml_data = ET.parse("./static/xml/sin.xml")  # парсим шаблон в dom
+
+        choice = form.output_select.data
+        if choice == 'txt':
+            xslt = ET.parse("./static/xml/sin_to_txt.xslt")  # получаем трансформер
+            transform = ET.XSLT(xslt)
+            newtxt = transform(xslt)
+            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+            selected_output = ET.tostring(newtxt)
+
+        elif choice == 'html':
+            xslt = ET.parse("./static/xml/sin_to_html.xslt")  # получаем трансформер
+            transform = ET.XSLT(xslt)
+            newhtml = transform(xslt)
+            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+            selected_output = ET.tostring(newhtml)
+            
+        elif choice == 'md':
+            xslt = ET.parse("./static/xml/sin_to_md.xslt")  # получаем трансформер
+            transform = ET.XSLT(xslt)
+            newmd = transform(xslt)
+            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+            selected_output = ET.tostring(newmd)
+
+
+    return render_template('sin.html', form=form, img_url=res_path, selected_output=selected_output)
 
     
 
@@ -158,20 +186,20 @@ def apinet():
     if request.mimetype == 'application/json':
         # получаем json данные
         data = request.get_json()
-        # берем содержимое по ключу, где хранится файл # закодированный строкой base64
-        # декодируем строку в массив байт используя кодировку utf-8
-        # первые 128 байт ascii и utf-8 совпадают, потому можно
+        # берем содержимое по ключу, где хранится файл # закодированный строкой base64
+        # декодируем строку в массив байт используя кодировку utf-8
+        # первые 128 байт ascii и utf-8 совпадают, потому можно
         filebytes = data['imagebin'].encode('utf-8')
-        # декодируем массив байт base64 в исходный файл изображение
+        # декодируем массив байт base64 в исходный файл изображение
         cfile = base64.b64decode(filebytes)
-        # чтобы считать изображение как файл из памяти используем BytesIO
+        # чтобы считать изображение как файл из памяти используем BytesIO
         img = Image.open(BytesIO(cfile))
         decode = neuronet.getresult([img])
         neurodic = {}
         for elem in decode:
             neurodic[elem[0][1]] = str(elem[0][2])
             print(elem)
-        # пример сохранения переданного файла
+        # пример сохранения переданного файла
         # handle = open('./static/f.png','wb')
         # handle.write(cfile)
         # handle.close()
@@ -186,7 +214,7 @@ def apinet():
 
 @app.route("/apixml", methods=['GET', 'POST'])
 def apixml():
-    # парсим xml файл в dom
+    # парсим xml файл в dom
     dom = ET.parse("./static/xml/file.xml")  # парсим шаблон в dom
     xslt = ET.parse("./static/xml/file.xslt")  # получаем трансформер
     transform = ET.XSLT(xslt)
@@ -196,8 +224,7 @@ def apixml():
     strfile = ET.tostring(newhtml)
     return strfile
   
- 
-import cv2
+
 import os
 from matplotlib import pyplot as plt
 from PIL import Image, ImageFilter
@@ -208,35 +235,16 @@ from PIL import Image, ImageFilter
 def imgfilter():
     # создаем объект формы
     form = NetForm()
-    # обнуляем переменные передаваемые в форму
-    filename = None
     # проверяем нажатие сабмит и валидацию введенных данных
+    filename1 = None
+    filename2 = None
     if form.validate_on_submit():
-        # файлы с изображениями читаются из каталога static
-        # filename = os.path.join('./static', secure_filename(form.upload.data.filename))
-        # fcount, fimage = neuronet.read_image_files(10, './static')
-        # передаем все изображения в каталоге на классификацию
-
-        old_image = cv2.imread('./static/image0008.png')
-
-        new_image = cv2.medianBlur(old_image, 9)
-
-        plt.figure(figsize=(11,6))
-
-        plt.subplot(121)
-        plt.imshow(cv2.cvtColor(old_image, cv2.COLOR_BGR2RGB))
-        plt.title('Original file')
-        plt.xticks([]), plt.yticks([])
-
-        plt.subplot(122)
-        plt.imshow(cv2.cvtColor(new_image, cv2.COLOR_BGR2RGB))
-        plt.title('Median Filter')
-        plt.xticks([]), plt.yticks([])
-
-        plt.savefig('./static/result.png')
+        filename1 = Image.open('./static/image0008.png')
+        filename2 = filename1.filter(ImageFilter.MedianFilter(size=9))
+        filename2.savefig('./static/result.png')
 
         # сохраняем загруженный файл
         form.upload.data.save('./static/result.png')
     # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
     # сети если был нажат сабмит, либо передадим falsy значения
-    return render_template('imgfilter.html', form=form, image_name=filename)
+    return render_template('imgfilter.html', form=form, image_name1=filename1, image_name2=filename2,)

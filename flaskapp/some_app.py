@@ -201,7 +201,6 @@ def apixml():
 import os
 from matplotlib import pyplot as plt
 from PIL import Image, ImageFilter
-from IPython.display import display
 
 
 # метод обработки запроса GET и POST от клиента

@@ -4,8 +4,15 @@
 {% block content %}
 
 {{ wtf.quick_form(form, method='post', enctype="multipart/form-data",action="sin") }}
-    <h2>Result:</h2>
+
 {% if img_url %}
-    <img src="{{ img_url }}">
+<h2>Graph:</h2>
+<img src="{{ img_url }}">
 {% endif %}
+
+{% if selected_output %}
+<h2>Selected output:</h2>
+    {{ selected_output }}
+{% endif %}
+
 {% endblock %}

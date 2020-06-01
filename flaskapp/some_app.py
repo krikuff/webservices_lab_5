@@ -1,3 +1,4 @@
+import matplotlib
 from flask_bootstrap import Bootstrap
 from flask import Flask
 
@@ -9,6 +10,7 @@ if __name__ == "__main__":
 
 from flask import render_template
 
+  
 
 @app.route("/data_to")
 def data_to():
@@ -20,14 +22,14 @@ def data_to():
 
 
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, SubmitField, FloatField, SelectField
+from wtforms import StringField, SubmitField, FloatField, SelectField, IntegerField
 
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 app.config['RECAPTCHA_USE_SSL'] = False
-app.config['RECAPTCHA_PUBLIC_KEY'] = '6LewZvsUAAAAAP8ftBu1PhFkI5RTayByO83wbV0C'
-app.config['RECAPTCHA_PRIVATE_KEY'] = '6LewZvsUAAAAANbjfnDQ-mTr77JZDSqaJSEQ8lM_'
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6LcXn_sUAAAAAEbvg1fqCMPOA_pgZiVcteIA9wCy'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcXn_sUAAAAAPnsHebESwEcexSbONmIPTcIHVPS'
 app.config['RECAPTCHA_OPTIONS'] = {'theme': 'white'}
 app.config['SECRET_KEY'] = 'secret'
 
@@ -59,6 +61,8 @@ class SinForm(FlaskForm):
     # Диапазон
     range_from = FloatField('От:')
     range_to = FloatField('До: ')
+
+    points_amount = IntegerField('Количество точек')
 
     # Формат вывода
     output_select = SelectField('Выбор вывода:', choices=[('txt','Текстовый список'), ('html','HTML-таблица'), ('md','Markdown-таблица')])
@@ -101,6 +105,44 @@ def net():
     # сети если был нажат сабмит, либо передадим falsy значения
     return render_template('net.html', form=form, image_name=filename, neurodic=neurodic)
 
+import lxml.etree as ET
+from math import sin
+from lxml.builder import E
+import matplotlib.pyplot as plt
+
+@app.route("/sin", methods=['POST', 'GET'])
+def sin_calc():
+    form = SinForm()
+
+    res_path = None
+
+    if form.validate_on_submit():
+        phase = float(form.phase.data)
+        amplitude = float(form.amplitude.data)
+        frequency = float(form.rate.data)
+        high = float(form.range_from.data)
+        low = float(form.range_to.data)
+        points_cnt = float(form.points_amount.data)
+        
+        xs = []
+        ys = []
+
+        step = (high - low) / points_cnt
+        x = low
+
+        while x <= high:
+            xs.append(x)
+            ys.append(sin(frequency * x + phase))
+            x += step
+
+        res_path = './static/graph.png'
+        
+        plt.plot(xs, ys)
+        plt.savefig(res_path)
+
+    return render_template('sin.html', form=form, img_url=res_path)
+
+    
 
 from flask import request
 from flask import Response
@@ -108,7 +150,6 @@ import base64
 from PIL import Image
 from io import BytesIO
 import json
-
 
 # метод для обработки запроса от пользователя
 @app.route("/apinet", methods=['GET', 'POST'])
@@ -143,10 +184,6 @@ def apinet():
     # возвращаем ответ
     return resp
 
-
-import lxml.etree as ET
-
-
 @app.route("/apixml", methods=['GET', 'POST'])
 def apixml():
     # парсим xml файл в dom
@@ -158,3 +195,48 @@ def apixml():
     # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
     strfile = ET.tostring(newhtml)
     return strfile
+  
+ 
+import cv2
+import os
+from matplotlib import pyplot as plt
+from PIL import Image, ImageFilter
+
+
+# метод обработки запроса GET и POST от клиента
+@app.route("/imgfilter", methods=['GET', 'POST'])
+def imgfilter():
+    # создаем объект формы
+    form = NetForm()
+    # обнуляем переменные передаваемые в форму
+    filename = None
+    # проверяем нажатие сабмит и валидацию введенных данных
+    if form.validate_on_submit():
+        # файлы с изображениями читаются из каталога static
+        # filename = os.path.join('./static', secure_filename(form.upload.data.filename))
+        # fcount, fimage = neuronet.read_image_files(10, './static')
+        # передаем все изображения в каталоге на классификацию
+
+        old_image = cv2.imread('./static/image0008.png')
+
+        new_image = cv2.medianBlur(old_image, 9)
+
+        plt.figure(figsize=(11,6))
+
+        plt.subplot(121)
+        plt.imshow(cv2.cvtColor(old_image, cv2.COLOR_BGR2RGB))
+        plt.title('Original file')
+        plt.xticks([]), plt.yticks([])
+
+        plt.subplot(122)
+        plt.imshow(cv2.cvtColor(new_image, cv2.COLOR_BGR2RGB))
+        plt.title('Median Filter')
+        plt.xticks([]), plt.yticks([])
+
+        plt.savefig('./static/result.png')
+
+        # сохраняем загруженный файл
+        form.upload.data.save('./static/result.png')
+    # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
+    # сети если был нажат сабмит, либо передадим falsy значения
+    return render_template('imgfilter.html', form=form, image_name=filename)

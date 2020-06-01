@@ -209,6 +209,8 @@ def imgfilter():
     # создаем объект формы
     form = NetForm()
     # проверяем нажатие сабмит и валидацию введенных данных
+    filename1 = None
+    filename2 = None
     if form.validate_on_submit():
         filename1 = Image.open('./static/image0008.png')
         filename2 = filename1.filter(ImageFilter.MedianFilter(size=9))

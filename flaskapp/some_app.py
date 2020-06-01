@@ -139,6 +139,7 @@ def sin_calc():
 
         res_path = './static/graph.png'
         
+        plt.clf()
         plt.plot(xs, ys)
         plt.savefig(res_path)
 

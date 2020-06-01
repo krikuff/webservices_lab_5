@@ -112,6 +112,7 @@ import matplotlib.pyplot as plt
 
 @app.route("/sin", methods=['POST', 'GET'])
 def sin_calc():
+    selected_output = None
     form = SinForm()
 
     res_path = None
@@ -123,16 +124,36 @@ def sin_calc():
         high = float(form.range_to.data)
         low = float(form.range_from.data)
         points_cnt = float(form.points_amount.data)
-        
+        choice = form.output_select.data
+
         xs = []
         ys = []
 
         step = (high - low) / points_cnt
         x = low
 
+        xml_data = None
+
+        xslt_path = f'./static/xml/sin_to_{choice}.xslt'
+        xml_data = ET.XML(f'<?xml-stylesheet type="text/xsl" href="{xslt_path}"?><sin></sin>')
+        xml_sin_tag = xml_data.find('sin')
+
         while x <= high:
             xs.append(x)
             ys.append(sin(frequency * x + phase))
+
+            xml_value_tag = ET.Element('value')
+
+            xml_x_axis = ET.Element('x_axis')
+            xml_x_axis.text = xs[-1]
+
+            xml_y_axis = ET.Element('y_axis')
+            xml_y_axis.text = ys[-1]
+
+            xml_value_tag.append(xml_x_axis)
+            xml_value_tag.append(xml_y_axis)
+            xml_sin_tag.append(xml_value_tag)
+
             x += step
 
         res_path = './static/graph.png'
@@ -141,32 +162,12 @@ def sin_calc():
         plt.plot(xs, ys)
         plt.savefig(res_path)
 
-
-        selected_output = None
-        xml_data = ET.parse("./static/xml/sin.xml")  # парсим шаблон в dom
-
-        choice = form.output_select.data
-        if choice == 'txt':
-            xslt = ET.parse("./static/xml/sin_to_txt.xslt")  # получаем трансформер
-            transform = ET.XSLT(xslt)
-            newtxt = transform(xslt)
-            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
-            selected_output = ET.tostring(newtxt)
-
-        elif choice == 'html':
-            xslt = ET.parse("./static/xml/sin_to_html.xslt")  # получаем трансформер
-            transform = ET.XSLT(xslt)
-            newhtml = transform(xslt)
-            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
-            selected_output = ET.tostring(newhtml)
-            
-        elif choice == 'md':
-            xslt = ET.parse("./static/xml/sin_to_md.xslt")  # получаем трансформер
-            transform = ET.XSLT(xslt)
-            newmd = transform(xslt)
-            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
-            selected_output = ET.tostring(newmd)
-
+        dom = ET.parse(xml_data)
+        xslt = ET.parse(xslt_path)  # получаем трансформер
+        transform = ET.XSLT(xslt)
+        new_dom = transform(dom)
+        # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+        selected_output = ET.tostring(new_dom)
 
     return render_template('sin.html', form=form, img_url=res_path, selected_output=selected_output)
 

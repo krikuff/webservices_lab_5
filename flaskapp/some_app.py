@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
 from flask import render_template
 
-  
+
 
 @app.route("/data_to")
 def data_to():
@@ -197,10 +197,11 @@ def apixml():
     return strfile
   
  
-import cv2
+
 import os
 from matplotlib import pyplot as plt
 from PIL import Image, ImageFilter
+from IPython.display import display
 
 
 # метод обработки запроса GET и POST от клиента
@@ -208,35 +209,15 @@ from PIL import Image, ImageFilter
 def imgfilter():
     # создаем объект формы
     form = NetForm()
-    # обнуляем переменные передаваемые в форму
-    filename = None
     # проверяем нажатие сабмит и валидацию введенных данных
     if form.validate_on_submit():
-        # файлы с изображениями читаются из каталога static
-        # filename = os.path.join('./static', secure_filename(form.upload.data.filename))
-        # fcount, fimage = neuronet.read_image_files(10, './static')
-        # передаем все изображения в каталоге на классификацию
-
-        old_image = cv2.imread('./static/image0008.png')
-
-        new_image = cv2.medianBlur(old_image, 9)
-
-        plt.figure(figsize=(11,6))
-
-        plt.subplot(121)
-        plt.imshow(cv2.cvtColor(old_image, cv2.COLOR_BGR2RGB))
-        plt.title('Original file')
-        plt.xticks([]), plt.yticks([])
-
-        plt.subplot(122)
-        plt.imshow(cv2.cvtColor(new_image, cv2.COLOR_BGR2RGB))
-        plt.title('Median Filter')
-        plt.xticks([]), plt.yticks([])
-
-        plt.savefig('./static/result.png')
+        filename1 = Image.open('./static/image0008.png')
+        filename2 = filename1.filter(ImageFilter.MedianFilter(size=9))
+        filename2.savefig('./static/result.png')
 
         # сохраняем загруженный файл
         form.upload.data.save('./static/result.png')
     # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
     # сети если был нажат сабмит, либо передадим falsy значения
-    return render_template('imgfilter.html', form=form, image_name=filename)
+    return render_template('imgfilter.html', form=form, image_name1=filename1, image_name2=filename2,)
+

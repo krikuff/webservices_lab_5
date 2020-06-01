@@ -135,14 +135,40 @@ def sin_calc():
             ys.append(sin(frequency * x + phase))
             x += step
 
-        print("DOne!")
         res_path = './static/graph.png'
         
         plt.clf()
         plt.plot(xs, ys)
         plt.savefig(res_path)
 
-    return render_template('sin.html', form=form, img_url=res_path)
+
+        selected_output = None
+        xml_data = ET.parse("./static/xml/sin.xml")  # парсим шаблон в dom
+
+        choice = form.output_select.data
+        if choice == 'txt':
+            xslt = ET.parse("./static/xml/sin_to_txt.xslt")  # получаем трансформер
+            transform = ET.XSLT(xslt)
+            newtxt = transform(xslt)
+            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+            selected_output = ET.tostring(newtxt)
+
+        elif choice == 'html':
+            xslt = ET.parse("./static/xml/sin_to_html.xslt")  # получаем трансформер
+            transform = ET.XSLT(xslt)
+            newhtml = transform(xslt)
+            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+            selected_output = ET.tostring(newhtml)
+            
+        elif choice == 'md':
+            xslt = ET.parse("./static/xml/sin_to_md.xslt")  # получаем трансформер
+            transform = ET.XSLT(xslt)
+            newmd = transform(xslt)
+            # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+            selected_output = ET.tostring(newmd)
+
+
+    return render_template('sin.html', form=form, img_url=res_path, selected_output=selected_output)
 
     
 

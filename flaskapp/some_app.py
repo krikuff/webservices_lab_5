@@ -116,8 +116,6 @@ def sin_calc():
 
     res_path = None
 
-    tmpl = render_template('sin.html', form=form, img_url=res_path)
-
     if form.validate_on_submit():
         phase = float(form.phase.data)
         amplitude = float(form.amplitude.data)
@@ -143,10 +141,7 @@ def sin_calc():
         plt.plot(xs, ys)
         plt.savefig(res_path)
 
-        tmpl = render_template('sin.html', form=form, img_url=res_path)
-        os.remove('./static/graph.png')
-
-    return tmpl
+    return render_template('sin.html', form=form, img_url=res_path)
 
     
 

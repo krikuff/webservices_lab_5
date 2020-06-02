@@ -1,4 +1,4 @@
-# webservices_lab_5
+# webservices_lab_5 | [![Build Status](https://travis-ci.org/cobsea/webservices_lab_5.svg?branch=master)](https://travis-ci.org/cobsea/webservices_lab_5)
 # Разработка простейшего веб сервиса с использованием Flusk и CI(Continous
 
 # Intaration)

@@ -8,11 +8,11 @@
 
 <h2>Image is here: </h2>
 
-{% if image_name %}
-    <p>{{image_name1}}
-    <p><img src={{image_name1}} class="img-rounded" alt="origin" width = 224 height=224 />
-    <p>{{image_name2}}
-    <p><img src={{image_name2}} class="img-rounded" alt="median filter" width = 224 height=224 />
+{% if filtered %}
+    <p>{{original}}
+    <p><img src={{original}} class="img-rounded" alt="origin" width = 224 height=224 />
+    <p>{{filtered}}
+    <p><img src={{filtered}} class="img-rounded" alt="median filter" width = 224 height=224 />
 {% else %}
     <p> There is no image yet </p>
 {% endif %}

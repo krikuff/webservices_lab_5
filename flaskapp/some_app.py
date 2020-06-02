@@ -132,11 +132,10 @@ def sin_calc():
         step = (high - low) / points_cnt
         x = low
 
-        xml_data = None
+        xml_sin_tag = None
 
         xslt_path = f'./static/xml/sin_to_{choice}.xslt'
-        xml_data = ET.XML(f'<?xml-stylesheet type="text/xsl" href="{xslt_path}"?><sin></sin>')
-        xml_sin_tag = xml_data.find('sin')
+        xml_sin_tag = ET.XML(f'<?xml-stylesheet type="text/xsl" href="{xslt_path}"?><sin></sin>')
 
         while x <= high:
             xs.append(x)
@@ -162,10 +161,9 @@ def sin_calc():
         plt.plot(xs, ys)
         plt.savefig(res_path)
 
-        dom = ET.parse(xml_data)
         xslt = ET.parse(xslt_path)  # получаем трансформер
         transform = ET.XSLT(xslt)
-        new_dom = transform(dom)
+        new_dom = transform(xml_sin_tag)
         # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
         selected_output = ET.tostring(new_dom)
 

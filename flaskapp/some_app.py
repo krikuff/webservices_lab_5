@@ -240,7 +240,7 @@ def imgfilter():
     if form.validate_on_submit():
         filename1 = Image.open('./static/image0008.png')
         filename2 = filename1.filter(ImageFilter.MedianFilter(size=9))
-        filename2.savefig('./static/result.png')
+        filename2.save('./static/result.png')
 
         # сохраняем загруженный файл
         form.upload.data.save('./static/result.png')

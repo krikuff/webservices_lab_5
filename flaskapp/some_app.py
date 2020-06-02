@@ -145,10 +145,10 @@ def sin_calc():
             xml_value_tag = ET.Element('value')
 
             xml_x_axis = ET.Element('x_axis')
-            xml_x_axis.text = xs[-1]
+            xml_x_axis.text = f"{xs[-1]}"
 
             xml_y_axis = ET.Element('y_axis')
-            xml_y_axis.text = ys[-1]
+            xml_y_axis.text = f"{ys[-1]}"
 
             xml_value_tag.append(xml_x_axis)
             xml_value_tag.append(xml_y_axis)

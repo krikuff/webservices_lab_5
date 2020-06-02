@@ -235,17 +235,17 @@ def imgfilter():
     # создаем объект формы
     form = NetForm()
     # проверяем нажатие сабмит и валидацию введенных данных
-    original_img = None
-    filtered_img = None
+    original_path = './static/image0008.png'
+    filtered_path = None
     if form.validate_on_submit():
-        original_img = Image.open('./static/image0008.png')
+        original_img = Image.open(original_path)
         filtered_img = original_img.filter(ImageFilter.MedianFilter(size=9))
 
-        res_path = './static/filter_result.png'
-        filtered_img.save(res_path)
+        filtered_path = './static/filter_result.png'
+        filtered_img.save(filtered_path)
 
         # сохраняем загруженный файл
-        form.upload.data.save(res_path)
+        form.upload.data.save(filtered_path)
     # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
     # сети если был нажат сабмит, либо передадим falsy значения
-    return render_template('imgfilter.html', form=form, original=original_img, filtered=filtered_img,)
+    return render_template('imgfilter.html', form=form, original=original_path, filtered=filtered_path)

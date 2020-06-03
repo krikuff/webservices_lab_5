@@ -17,13 +17,13 @@
     const dom = document,
         outputBlock = dom.getElementById('output'),
         decodeHtmlEntity = function(str) {
-            return str.replace(/&#(\d+);/g, function(match, dec) {
-                return String.fromCharCode(dec);
-            });
+            const txt = dom.createElement('textarea');
+            txt.innerHTML = str;
+            return txt.value;
         },
         htmlStr = `{{ selected_output }}`;
 
-    outputBlock.innerHtml =  decodeHtmlEntity("");
+    outputBlock.innerHtml =  decodeHtmlEntity(htmlStr);
     console.log(htmlStr);
 </script>
 {% endif %}

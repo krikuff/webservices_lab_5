@@ -12,7 +12,13 @@
 
 {% if selected_output %}
 <h2>Selected output:</h2>
-    <pre lang = "xml">{{ selected_output }}</pre>
+    <div id="output"></div>
+<script>
+    const dom = document,
+        outputBlock = dom.getElementById('output');
+    outputBlock.innerHtml =  {{ selected_output }};
+    console.log(outputBlock, {{ selected_output }});
+</script>
 {% endif %}
 
 {% endblock %}

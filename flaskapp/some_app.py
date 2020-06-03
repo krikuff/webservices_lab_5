@@ -132,11 +132,10 @@ def sin_calc():
         step = (high - low) / points_cnt
         x = low
 
-        xml_data = None
+        xml_sin_tag = None
 
         xslt_path = f'./static/xml/sin_to_{choice}.xslt'
-        xml_data = ET.XML(f'<?xml-stylesheet type="text/xsl" href="{xslt_path}"?><sin></sin>')
-        xml_sin_tag = xml_data.find('sin')
+        xml_sin_tag = ET.XML(f'<?xml-stylesheet type="text/xsl" href="{xslt_path}"?><sin></sin>')
 
         while x <= high:
             xs.append(x)
@@ -145,10 +144,10 @@ def sin_calc():
             xml_value_tag = ET.Element('value')
 
             xml_x_axis = ET.Element('x_axis')
-            xml_x_axis.text = xs[-1]
+            xml_x_axis.text = f"{xs[-1]}"
 
             xml_y_axis = ET.Element('y_axis')
-            xml_y_axis.text = ys[-1]
+            xml_y_axis.text = f"{ys[-1]}"
 
             xml_value_tag.append(xml_x_axis)
             xml_value_tag.append(xml_y_axis)
@@ -162,10 +161,9 @@ def sin_calc():
         plt.plot(xs, ys)
         plt.savefig(res_path)
 
-        dom = ET.parse(xml_data)
         xslt = ET.parse(xslt_path)  # получаем трансформер
         transform = ET.XSLT(xslt)
-        new_dom = transform(dom)
+        new_dom = transform(xml_sin_tag)
         # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
         selected_output = ET.tostring(new_dom)
 
@@ -237,15 +235,18 @@ def imgfilter():
     # создаем объект формы
     form = NetForm()
     # проверяем нажатие сабмит и валидацию введенных данных
-    filename1 = None
-    filename2 = None
+    original_path = None
+    filtered_path = None
     if form.validate_on_submit():
-        filename1 = Image.open('./static/image0008.png')
-        filename2 = filename1.filter(ImageFilter.MedianFilter(size=9))
-        filename2.savefig('./static/result.png')
+        original_path = './static/unfiltered_image.png'
+        form.upload.data.save(original_path)
 
-        # сохраняем загруженный файл
-        form.upload.data.save('./static/result.png')
+        original_img = Image.open(original_path)
+        filtered_img = original_img.filter(ImageFilter.MedianFilter(size=9))
+
+        filtered_path = './static/filter_result.png'
+        filtered_img.save(filtered_path)
+
     # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
     # сети если был нажат сабмит, либо передадим falsy значения
-    return render_template('imgfilter.html', form=form, image_name1=filename1, image_name2=filename2,)
+    return render_template('imgfilter.html', form=form, original=original_path, filtered=filtered_path)

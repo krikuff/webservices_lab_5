@@ -15,9 +15,15 @@
     <div id="output"></div>
 <script>
     const dom = document,
-        outputBlock = dom.getElementById('output');
-    outputBlock.innerHtml =  {{ selected_output }};
-    console.log(outputBlock, {{ selected_output }});
+        outputBlock = dom.getElementById('output'),
+        decodeHtmlEntity = function(str) {
+            return str.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+        };
+
+    outputBlock.innerHtml =  decodeHtmlEntity("{{ selected_output }}");
+    console.log(outputBlock, "{{ selected_output }}");
 </script>
 {% endif %}
 

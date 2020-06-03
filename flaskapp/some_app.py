@@ -165,7 +165,7 @@ def sin_calc():
         transform = ET.XSLT(xslt)
         new_dom = transform(xml_sin_tag)
         # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
-        selected_output = ET.tostring(new_dom)
+        selected_output = new_dom
 
     return render_template('sin.html', form=form, img_url=res_path, selected_output=selected_output)
 

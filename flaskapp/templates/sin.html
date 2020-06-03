@@ -20,10 +20,11 @@
             return str.replace(/&#(\d+);/g, function(match, dec) {
                 return String.fromCharCode(dec);
             });
-        };
+        },
+        htmlStr = `{{ selected_output }}`;
 
-    outputBlock.innerHtml =  decodeHtmlEntity("{{ selected_output }}");
-    console.log(outputBlock, "{{ selected_output }}");
+    outputBlock.innerHtml =  decodeHtmlEntity("");
+    console.log(htmlStr);
 </script>
 {% endif %}
 

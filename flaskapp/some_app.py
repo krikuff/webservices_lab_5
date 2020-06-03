@@ -1,15 +1,20 @@
 import matplotlib
-from flask_bootstrap import Bootstrap
 from flask import Flask
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+
+
+@app.route("/")
+def hello():
+    return "<h1 style='color:blue'>Hello There!</h1>"
+
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000)
 
 from flask import render_template
-
 
 
 @app.route("/data_to")
@@ -51,6 +56,7 @@ class NetForm(FlaskForm):
     # кнопка submit, для пользователя отображена как send
     submit = SubmitField('send')
 
+
 class SinForm(FlaskForm):
     # Фаза
     phase = FloatField('Фаза')
@@ -65,9 +71,11 @@ class SinForm(FlaskForm):
     points_amount = IntegerField('Количество точек')
 
     # Формат вывода
-    output_select = SelectField('Выбор вывода:', choices=[('txt','Текстовый список'), ('html','HTML-таблица'), ('md','Markdown-таблица')])
+    output_select = SelectField('Выбор вывода:', choices=[('txt', 'Текстовый список'), ('html', 'HTML-таблица'),
+                                                          ('md', 'Markdown-таблица')])
 
     submit = SubmitField('Отправить')
+
 
 # функция обработки запросов на адрес 127.0.0.1:5000/net
 # модуль проверки и преобразование имени файла
@@ -105,10 +113,12 @@ def net():
     # сети если был нажат сабмит, либо передадим falsy значения
     return render_template('net.html', form=form, image_name=filename, neurodic=neurodic)
 
+
 import lxml.etree as ET
 from math import sin
 from lxml.builder import E
 import matplotlib.pyplot as plt
+
 
 @app.route("/sin", methods=['POST', 'GET'])
 def sin_calc():
@@ -156,7 +166,7 @@ def sin_calc():
             x += step
 
         res_path = './static/graph.png'
-        
+
         plt.clf()
         plt.plot(xs, ys)
         plt.savefig(res_path)
@@ -169,7 +179,6 @@ def sin_calc():
 
     return render_template('sin.html', form=form, img_url=res_path, selected_output=selected_output)
 
-    
 
 from flask import request
 from flask import Response
@@ -177,6 +186,7 @@ import base64
 from PIL import Image
 from io import BytesIO
 import json
+
 
 # метод для обработки запроса от пользователя
 @app.route("/apinet", methods=['GET', 'POST'])
@@ -211,6 +221,7 @@ def apinet():
     # возвращаем ответ
     return resp
 
+
 @app.route("/apixml", methods=['GET', 'POST'])
 def apixml():
     # парсим xml файл в dom
@@ -222,7 +233,7 @@ def apixml():
     # преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
     strfile = ET.tostring(newhtml)
     return strfile
-  
+
 
 import os
 from matplotlib import pyplot as plt

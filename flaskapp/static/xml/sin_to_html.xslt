@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version = "1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/">
+<html>
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+    <h1>HTML</h1>
     <table border="1">
     <tbody>
         <tr>
@@ -19,5 +25,7 @@
     </xsl:for-each>
     </tbody>
     </table>
+</body>
+</html>
 </xsl:template>
 </xsl:stylesheet>

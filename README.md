@@ -1,28 +1,31 @@
-# webservices_lab_5 | [![Build Status](https://travis-ci.org/cobsea/webservices_lab_5.svg?branch=master)](https://travis-ci.org/cobsea/webservices_lab_5)
-# Разработка простейшего веб сервиса с использованием Flusk и CI(Continous
+# Разработка простейшего веб-сервиса на Flask с использованием Travis CI
 
-# Intaration)
+| Travis CI|
+| ------ |
+|[![Build Status](https://travis-ci.org/cobsea/webservices_lab_5.svg?branch=master)](https://travis-ci.org/cobsea/webservices_lab_5)|
 
 ## Непрерывная интеграция (CI) для GitHub
 
-```
-Непрерывная интеграция (CI, англ. Continuous Integration)  способ разработки программного обеспечения,
+Непрерывная интеграция (CI, англ. Continuous Integration) — способ разработки программного обеспечения,
 который заключается в постоянном слиянии рабочих копий в общую основную ветвь разработки (до нескольких
 раз в день) и выполнении частых автоматизированных сборок проекта для скорейшего выявления потенци-
-альных дефектов и решения интеграционных проблем. В обычном проекте, где над разными частями системы
+альных дефектов и решения интеграционных проблем.
+
+В обычном проекте, где над разными частями системы
 разработчики трудятся независимо, стадия интеграции является заключительной. Она может непредсказуемо
 задержать окончание работ. Переход к непрерывной интеграции позволяет снизить трудоёмкость интеграции и
 сделать её более предсказуемой за счёт наиболее раннего обнаружения и устранения ошибок и противоречий, но
 основным преимуществом является сокращение стоимости исправления дефекта, за счёт раннего его выявления.
 Впервые концептуализирована и предложена Гради Бучем в 1991 году. Является одним из основных элементов
 практики экстремального программирования.
+
 Для применения практики необходимо выполнение ряда базовых требований к проекту разработки. В частности,
 исходный код и всё, что необходимо для сборки и тестирования проекта, должно храниться в репозитории
 системы управления версиями, а операции копирования из репозитория, сборки и тестирования всего проекта
 должны быть автоматизированы и легко вызываться из внешних программ.
 Для организации процесса непрерывной интеграции на выделенном сервере запускается служба, в задачи которой
 входят:
-```
+
 - получение исходного кода из репозитория;
 - сборка проекта;
 - выполнение тестов;
@@ -31,74 +34,60 @@
 
 ## Примеры веб-сервисов для непрерывной интеграции
 
-```
-Существует ряд веб-сервисов, которые позволяют реализовать процесс непрерывной интеграции. Для опе-
-рационной системы Windows это AppVeyor https://www.appveyor.com/, для Mac OS и Linux это Travis CI
-https://travis-ci.org/. Мы будем работать под Linux с использованием Travis CI.
+Существует ряд веб-сервисов, которые позволяют реализовать процесс непрерывной интеграции. Для операционной системы Windows это [AppVeyor](https://www.appveyor.com/), для Mac OS и Linux это [Travis CI](https://travis-ci.org/). Мы будем работать под Linux с использованием Travis CI.
 Он имеет ряд особенностей, которые делают его хорошим выбором для начала работы с конвейерами сборки:
-```
+
 - Быстро интегрируется с любым общедоступным GitHub-репозиторием.
 - Поддерживает все основные языки программирования
 - Развертывание на нескольких разных облачных платформах
 - Предлагает множество инструментов для обмена сообщениями и оповещения
+
 На высоком уровне он работает путем мониторинга GitHub-репозитория на предмет новых коммитов.
 Когда создается новый коммит, он выполняет шаги конвейера сборки, как определено в файле конфигурации.
 Если какой-либо шаг не удался, конвейер завершается, и об этом создается уведомление.
-Из коробки Travis CI требует незначительных настроек конфигурации. Единственная необходимая конфигурация
-- это указание языка программирования.
+Из коробки Travis CI требует незначительных настроек конфигурации. Единственная необходимая конфигурация — указание языка программирования.
 
-Всегда можно предоставить больше настроек конфигурации для адаптации нашего конвейера, если это необ-
-ходимо. Например, мы можем ограничить, ветви для которых запускаются сборки, добавить дополнительные
+Всегда можно предоставить больше настроек конфигурации для адаптации нашего конвейера, если это необходимо. Например, мы можем ограничить, ветви для которых запускаются сборки, добавить дополнительные
 шаги в конвейер и многое другое.
 Travis умеет работать как из полновесной виртуальной машины, так и из Docker-контейнера. В теории, это
-позволяет сократить время между git push и началом сборки  приблизительно на одну минуту. К сожалению,
+позволяет сократить время между git push и началом сборки приблизительно на одну минуту. К сожалению,
 на практике за это ускорение придётся заплатить потерей возможности делать sudo, а это, в свою очередь, ведёт
 к ограничениям при установке нужных зависимостей.
+
 Как именно собирать, тестировать и развёртывать проект, описывается в специальном конфигурационном файле
-на языке YAML. Этот файл должен лежать в корне репозитория и иметь имя .travis.yml или appveyor.yml
-(допускается .appveyor.yml)  для Travis CI и AppVeyor соответственно.
+на языке YAML. Этот файл должен лежать в корне репозитория и иметь имя `.travis.yml` или `appveyor.yml`
+для Travis CI и AppVeyor соответственно.
 
 
-```
-Что такое YAML
-```
+
+## Что такое YAML
+
 YAML это язык с синтаксическим структурированием с помощью отступов (как и, например, Питон), но при
 этом не разрешается использование табуляции.
+
 После того, как YAML файлы добавлены в репозиторий, нужно будет включить непрерывную интеграцию для
-заданного проекта на сайтах Travis и AppVeyor. Нужно зайти на https://travis-ci.org под своим GitHub аккаунтом,
-соглашаемся с доступом, который запрашивает Travis CI (ему нужно будет получать уведомления о новых
+заданного проекта на сайтах Travis и AppVeyor. Нужно зайти на https://travis-ci.org под своим GitHub аккаунтом, соглашаемся с доступом, который запрашивает Travis CI (ему нужно будет получать уведомления о новых
 коммитах), синхронизуем список своих проектов, выбираем нужный и щёлкаем на включатель. Можно повторить
 аналогичный процесс на сайте https://ci.appveyor.com, если вы все-таки решили использовать Windows.
 Начиная с этого момента каждый git push в ваш репозиторий будет запускать процесс непрерывной интеграции:
 сервисы Travis поднимут виртуальную машину, настроят среду, установят зависимости, скачают ваш проект, собе-
-рут и протестируют его, а также, при желании, выложат инсталляторы, архивы с исходниками и документацию
- всё согласно спецификации в YAML-файлах.
+рут и протестируют его, а также, при желании, выложат инсталляторы, архивы с исходниками и документацию, всё согласно спецификации в YAML-файлах.
 
-```
 В создании YAML-файлов и заключается основная работа.
 Когда вы зайдете на сайт travis-ci вас попросят о входе через github или bitbucket. Выбираем github. Возможно,
 произойдет переключение на travis-ci.com если вы заходите использовать приватные репозитории github, но
 можно указать org и работать с org.
-```
+
 ## Создаем наш проект Flask
 
-```
-Создадим на сайте github новый проект. Можем заполнить файл readme.md, либо если будете использовать git
+Создадим на сайте github новый проект. Можем заполнить файл `README.md`, либо если будете использовать git
 client на своей машине, то лучше не делать этого сразу. Дальнейшие указания будут связаны с непосредственной
 работой через github сайт. Создадим каталог в котором будет храниться наш проект, flaskapp. Для этого выбираем
 Create New File.
-```
-```
-Рис. 1: Создание нового файла на github
-```
-```
-Поставим слэш после имени каталога flaskapp и имя файла .gitkeep. В указанном файле можем написать, что
+
+Поставим слэш после имени каталога flaskapp и имя файла `.gitkeep`. В указанном файле можем написать, что
 угодно, например для чего данный каталог. Нажимаем кнопку commit снизу.
-```
-```
-Рис. 2: Создание каталога на github
-```
-```
+
 Теперь создадим файлы в которых будет начальные файлы с нашим веб сервером. Перед разработкой веб
 сервера желательно разработать модель будущего сайта, провести анализ требований пользователей, оценить
 возможную нагрузку на ваш сайт. Но, в нашем случае мы пишем достаточно простое приложение и потому пока
@@ -108,8 +97,8 @@ Create New File.
 print("Hello world")
 После того как вы привязали свой проект а github с непрерывной интеграцией travis-ci. Можно создать .travis.yml
 файл в проекте github и после commit будет запущен build.
-```
 
+```yml
 language: python
 
 install:
@@ -124,12 +113,10 @@ script:
 скрипт который напечатает “Hello world”.
 
 ```
-Рис. 3: Результат подтверждения commit на travis-ci
-```
+
 Продолжение простейшего эксперимента с проектом Flask
 
-Продолжим дальше наши эксперименты уже непосредственно с простейшим сайтом с использованием фрейм-
-ворка Flask. Очевидно с точки зрения непрерывной интеграции необходимо создать работающий веб сайт,
+Продолжим дальше наши эксперименты уже непосредственно с простейшим сайтом с использованием фреймворка Flask. Очевидно с точки зрения непрерывной интеграции необходимо создать работающий веб сайт,
 протестировать его и разместить на каком-либо хостинге. Система непрерывной интеграции позволяет это
 сделать, в частности на Heroku. Но пока попробуем просто запустить сайт в фоновом режиме. Для этого нам
 понадобится создать небольшой скрипт под Linux и изменить файл YAML. Удобнее всего это делать используя
@@ -138,28 +125,25 @@ git клиент, но если у вас его нет, можно воспол
 некоторые из этих build не сработают вовсе. Потому лучше создать у себя на диске отдельную директорию и
 потом сделать upload содержимого директории на github через интерфейс и подтвердить commit.
 
-```
-Рис. 4: Содержимое корневой папки на github
-```
-
 Итак, какие файлы нам понадобятся в каталоге flaskapp. Файл содержащий приложение Flask. Назовем его
-some_app.py.
+`some_app.py`.
 
-print("Hello world")
+```python
 from flask import Flask
 app = Flask(__name__)
 
 #декоратор для вывода страницы по умолчанию
 @app.route("/")
 def hello():
-return " <html><head></head> <body> Hello World! </body></html>"
+    return "<html><head></head> <body> Hello World! </body></html>"
 
 if __name__ == "__main__":
-app.run(host='127.0.0.1',port=5000)
+    app.run(host='127.0.0.1',port=5000)
+```
 
-Что такое WSGI
+## Что такое WSGI
 
-Файл wsgi.py. WSGI (Web Server Gateway Interface) это стандарт взаимодействия между Python-программой,
+WSGI (Web Server Gateway Interface) — это стандарт взаимодействия между Python-программой,
 выполняющейся на стороне сервера, и самим веб-сервером, например Apache. WSGI(Web-Server Gateway Interface)
 является потомком CGI(Common Gateway Interface). Когда веб начал развиваться, CGI разрастался из-за под-
 держки огромного количества языков и из-за отсутствия других решений. Однако, такое решение было медленным
@@ -168,8 +152,8 @@ Nginx и т.д.) на веб-приложения.
 
 В простейшем случае WSGI состоит из двух основных компонент:
 
-Веб-сервер (Nginx, Apache и т. д.);
-Веб-приложение, написанное на языке Python.
+- Веб-сервер (Nginx, Apache и т. д.);
+- Веб-приложение, написанное на языке Python.
 
 Веб-сервер исполняет код и отправляет связанную с http-запросом информацию и callback-функцию в веб-
 приложение. Затем запрос на стороне приложения обрабатывается и высылается ответ на веб-сервер. Перио-
@@ -177,52 +161,57 @@ Nginx и т.д.) на веб-приложения.
 Такие прослойки позволяют осуществить, например, балансировку между несколькими веб-приложениеми или
 предпроцессинг(предобработку) отдаваемого контента.
 
-Файл wsgi.py.
+Файл `wsgi.py`
 
+```python
 from some_app import app
 
 if __name__ == "__main__":
-app.run()
+    app.run()
+```
 
-Примеры wsgi серверов и Gunicorn
+### Примеры wsgi серверов и Gunicorn
 
 В качестве веб-сервера будем использовать gunicorn, хотя есть и множество других (Bjoern, uWSGI, mod_wsgi,
-Meinheld, CherryPy). Gunicorn это WSGI-сервер, созданный для использования в UNIX-системах. Название 
-сокращенная и комбинированная версия слов ¾Green Unicorn¿. Он относительно быстрый, легко запускается и
+Meinheld, CherryPy). Gunicorn это WSGI-сервер, созданный для использования в UNIX-системах. Название сокращенная и комбинированная версия слов Green Unicorn. Он относительно быстрый, легко запускается и
 работает с широким спектром веб-фреймворков. Команда разработчиков рекомендует использовать Gunicorn в
 связке с Nginx, где Nginx используется в качестве прокси-сервера.
 
-Запуск проекта с использование gunicorn
+### Запуск проекта с использование gunicorn
 
 В файле YAML наряду с Flask, мы установим gunicorn, а в скрипте ниже реализуется вызов веб сервера с нашим
 веб приложением.
 
-Файл st.sh для вызова в скрипте yaml.
+Файл `st.sh` для вызова в скрипте yaml.
 
+```shell
 gunicorn --bind 127.0.0.1:5000 wsgi:app & APP_PID=$!
 sleep 5
 echo $APP_PID
 kill -TERM $APP_PID
 echo process gunicorns kills
 exit 0
-
+```
 
 Предварительно можно протестировать ваш проект на локальной машине путем запуска из командной строки
 вашего проекта.
 
+```shell
 gunicorn --bind 127.0.0.1:5000 wsgi:app
+```
 
-Затем в браузере наберите адрес 127.0.0.1:5000.
+Затем в браузере наберите адрес `127.0.0.1:5000`.
 
-Что здесь делается (в скрипте st.sh)? Сначала мы запускаем веб сервер в фоновом режиме на это указывает
+Что здесь делается (в скрипте `st.sh`)? Сначала мы запускаем веб сервер в фоновом режиме на это указывает
 символ & в конце команды, при этом в переменной APP_PID мы сохраняем PID последнего фонового процесса,
 этот номер хранится в переменной $!. Затем делаем приостановку на 5 секунд, это сделано заранее, чтобы потом
 можно было запустить какие-то проверочные скрипты, возможно, этого будет и не достаточно. Наше приложение
 выполняется в так называемых worker-ах, можно указать их количество. После чего мы останавливаем master
 процесс веб-сервера kill -TERM, можно посмотреть другие ключи для команды kill. Например, -HUP, перезапуск.
 
-Файл .travis.yml, который хранится вне папки flaskapp.
+Файл `.travis.yml`, который хранится вне папки flaskapp.
 
+```yml
 language: python
 before_install:
 
@@ -233,6 +222,7 @@ install:
 script:
 - cd flaskapp
 - ./st.sh
+```
 
 Здесь мы указываем, что будет запускаться в виртуальной машине. Как видим, указывается язык программиро-
 вания. До инсталляции назначается атрибут файла скрипта - исполнимый. Устанавливается Flask, gunicorn, в
@@ -242,13 +232,16 @@ script:
 
 Попробуем запустить некоторый тест. Создадим файл client.py.
 
+```python
 import requests
 r = requests.get('http://localhost:5000/')
 print(r.status_code)
 print(r.text)
+```
 
-Изменим файл st.sh на следующий:
+Изменим файл `st.sh` на следующий:
 
+```shell
 gunicorn --bind 127.0.0.1:5000 wsgi:app & APP_PID=$!
 sleep 5
 echo start client
@@ -257,9 +250,11 @@ sleep 5
 echo $APP_PID
 kill -TERM $APP_PID
 exit 0
+```
 
-Изменим наш файл .travis.yml, загрузим файлы на github и закоммитим (commit).
+Изменим наш файл `.travis.yml`, загрузим файлы на github и закоммитим (commit).
 
+```yml
 language: python
 before_install:
 
@@ -271,10 +266,10 @@ install:
 script:
 - cd flaskapp
 - ./st.sh
+```
 
 Ниже в job log выводится консольная информация при запуске виртуальной машины с инициирующими
 командами из yaml файла.
-
 
 ## Стоит ли так проводить тестирование
 
@@ -298,23 +293,28 @@ travis-ci и системы контроля версий не совсем об
 Для начала изучим возможности Flask для нашего будущего проекта. Сначала нам понадобятся шаблоны.
 Импортируем в наш файл some_app.py модуль и добавим новую функцию.
 
+```python
 from flask import render_template
+
 #наша новая функция сайта
 @app.route("/data_to")
 def data_to():
-#создаем переменные с данными для передачи в шаблон
-some_pars = {'user':'Ivan','color':'red'}
-some_str ='Hello my dear friends!'
-some_value = 10
-#передаем данные в шаблон и вызываем его
-return render_template('simple.html',some_str = some_str,
+    #создаем переменные с данными для передачи в шаблон
+    some_pars = {'user':'Ivan','color':'red'}
+    some_str ='Hello my dear friends!'
+    some_value = 10
+    #передаем данные в шаблон и вызываем его
+    return render_template('simple.html',some_str = some_str,
+
 some_value = some_value,some_pars=some_pars)
+```
 
 Здесь мы передаем словарь, строку и просто целое значение. Для удобства можно все передать в одном словаре.
 
 Создадим так же сам шаблон, для этого сначала создадим каталог templates в нашем каталоге приложения. И
 запишем туда файл simple.html.
 
+```html
 <html>
 <head>
 {% if some_str %}
@@ -328,34 +328,40 @@ some_value = some_value,some_pars=some_pars)
 <h2>some_value {{ some_value }}!</h2>
 </body>
 </html>
+```
 
-В шаблон {{}} можно передавать не только переменные но и функции, так как в python функция является так
+В шаблон `{{}}` можно передавать не только переменные но и функции, так как в python функция является так
 же объектом. В данному случае функция render_template вызывает шаблонизатор Jinja2, который является
-частью фреймворка Flask. Jinja2 заменяет блоки {{... }} на соответствующие им значения, переданные как
-аргументы шаблона. А в {% %} можно указывать специальные управляющие операторы, в данном случае if else
+частью фреймворка Flask. Jinja2 заменяет блоки `{{... }}` на соответствующие им значения, переданные как
+аргументы шаблона. А в `{% %}` можно указывать специальные управляющие операторы, в данном случае if else
 endif. Можно также, например,
 
+```
 {% for x in mylist | reverse %}
 {% endfor %}
+```
 
 и многие другие.
 
-У себя на локальной машине запустите ваш проект через gunicorn и проверьте 127.0.0.1:5000/data_to.
+У себя на локальной машине запустите ваш проект через gunicorn и проверьте `127.0.0.1:5000/data_to`.
 
 При этом мы видим как динамически сформировалась страница, с переданным заголовком страницы, строкой с
 именем пользователя красного цвета.
 
-
 Используя github или git client загрузите файлы в проект. Можно сначала создать папку templates в нее поместить
-файл simple.html. Затем обновить файл some_app.py. Затем файл client.py.
+файл `simple.html`. Затем обновить файл `some_app.py`. Затем файл `client.py`.
 
+```python
 import requests
+
 r = requests.get('http://localhost:5000/')
 print(r.status_code)
 print(r.text)
+
 r = requests.get('http://localhost:5000/data_to')
 print(r.status_code)
 print(r.text)
+```
 
 Важная ремарка на самостоятельную работу.
 
@@ -381,39 +387,39 @@ html с помощью forms input, но зачем нам это делать, 
 который у нас рендерится мы добавим вызов обработки формы, которая передается при обработке запроса
 пользователя с помощью одной функции
 
-wtf.quick_form(form, method=‘post’,enctype=“multipart/form-data”, action=“net”).
+```python
+wtf.quick_form(form, method=‘post’,enctype=“multipart/form-data”, action=“net”)
+```
 
 Данная функция сама сформирует html код с формой. Так как на форме есть кнопка submit и для сабмит
 указан обработчик POST, то естественно будет вызван метод POST, который мы обрабатываем в методе net
 файла some_app.py. Кроме того, на форме есть капча, проверяющая наличие человека во взаимодействии (как
 установить капчу показано ниже, после листингов), загрузка файла с изображением которое классифицируется
-нейронной сетью прописанной в файле net.py, функции НС вызываются тоже из нашего же обработчика. Данные
+нейронной сетью прописанной в файле `net.py`, функции НС вызываются тоже из нашего же обработчика. Данные
 формы автоматически валидируются на введение и правильность.
 
 Дальше изучаем код по комментариям.
 
-создадим папку во flaskapp/static, поместите туда файл с изображением image0008.png
+* Создадим папку во `flaskapp/static`, поместите туда файл с изображением `image0008.png`
 
-Например, md static
+* Установим нужные библиотеки python
 
-установим нужные библиотеки python
-
-- pip3 install flask-bootstrap
-- pip3 install flask-wtf
-- pip3 install pillow
-- pip3 install tensorflow==2.0.0-alpha
-- pip3 install keras
+    - pip3 install flask-bootstrap
+    - pip3 install flask-wtf
+    - pip3 install pillow
+    - pip3 install tensorflow==2.0.0-alpha
+    - pip3 install keras
 
 Если хотите запускать нейронную сеть с использование gpu, можно установить tensorflow-gpu==2.0.0-alpha0. Но
 тогда вам придется устанавливать дополнительно cuda, cudnn, иметь соответствующую видеокарту. Потому в
 нашем случае достаточно tensorflow для CPU.
 
-
-Добавим код в some_app.py
+Добавим код в `some_app.py`
 
 Можем этот код добавить непосредственно после того кода, который у нас уже есть и реализует метод data_to.
 В коде присутствуют ключи для капчи, которые нужно сформировать на сайте google.
 
+```python
 # модули работы с формами и полями в формах
 from flask_wtf import FlaskForm,RecaptchaField
 from wtforms import StringField, SubmitField, TextAreaField
@@ -429,20 +435,20 @@ app.config['RECAPTCHA_OPTIONS'] = {'theme':'white'}
 
 # создаем форму для загрузки файла
 class NetForm(FlaskForm):
-# поле для введения строки, валидируется наличием данных
-# валидатор проверяет введение данных после нажатия кнопки submit
-# и указывает пользователю ввести данные если они не введены
-# или неверны
-openid = StringField('openid', validators = [DataRequired()])
-# поле загрузки файла
-# здесь валидатор укажет ввести правильные файлы
-upload = FileField('Load image', validators=[
-FileRequired(),
-FileAllowed(['jpg','png','jpeg'],'Images only!')])
-# поле формы с capture
-recaptcha = RecaptchaField()
-#кнопка submit, для пользователя отображена как send
-submit = SubmitField('send')
+    # поле для введения строки, валидируется наличием данных
+    # валидатор проверяет введение данных после нажатия кнопки submit
+    # и указывает пользователю ввести данные если они не введены
+    # или неверны
+    openid = StringField('openid', validators = [DataRequired()])
+    # поле загрузки файла
+    # здесь валидатор укажет ввести правильные файлы
+    upload = FileField('Load image', validators=[
+        FileRequired(),
+        FileAllowed(['jpg','png','jpeg'],'Images only!')])
+    # поле формы с capture
+    recaptcha = RecaptchaField()
+    #кнопка submit, для пользователя отображена как send
+    submit = SubmitField('send')
 
 # функция обработки запросов на адрес 127.0.0.1:5000/net
 # модуль проверки и преобразование имени файла
@@ -455,37 +461,36 @@ import net as neuronet
 # метод обработки запроса GET и POST от клиента
 @app.route("/net",methods=['GET','POST'])
 def net():
-# создаем объект формы
-form = NetForm()
-# обнуляем переменные передаваемые в форму
-filename=None
-neurodic = {}
-# проверяем нажатие сабмит и валидацию введенных данных
-if form.validate_on_submit():
-# файлы с изображениями читаются из каталога static
-filename = os.path.join('./static', secure_filename(form.upload.data.filename))
-fcount, fimage = neuronet.read_image_files(10,'./static')
-# передаем все изображения в каталоге на классификацию
-# можете изменить немного код и передать только загруженный файл
-decode = neuronet.getresult(fimage)
-# записываем в словарь данные классификации
-for elem in decode:
-neurodic[elem[0][1]] = elem[0][2]
-# сохраняем загруженный файл
-
-
+    # создаем объект формы
+    form = NetForm()
+    # обнуляем переменные передаваемые в форму
+    filename=None
+    neurodic = {}
+    # проверяем нажатие сабмит и валидацию введенных данных
+    if form.validate_on_submit():
+        # файлы с изображениями читаются из каталога static
+        filename = os.path.join('./static', secure_filename(form.upload.data.filename))
+        fcount, fimage = neuronet.read_image_files(10,'./static')
+        # передаем все изображения в каталоге на классификацию
+        # можете изменить немного код и передать только загруженный файл
+        decode = neuronet.getresult(fimage)
+        # записываем в словарь данные классификации
+        for elem in decode:
+        neurodic[elem[0][1]] = elem[0][2]
+        # сохраняем загруженный файл
+        form.upload.data.save(filename)
+    # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
+    # сети если был нажат сабмит, либо передадим falsy значения
+    return render_template('net.html',form=form,image_name=filename,neurodic=neurodic)
 ```
-form.upload.data.save(filename)
-# передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
-# сети если был нажат сабмит, либо передадим falsy значения
-return render_template('net.html',form=form,image_name=filename,neurodic=neurodic)
-```
+
 Здесь используется класс формы, которая реализует размещение полей ввода строки, капчи, и загрузки файла,
 кроме того шаблон выводит содержимое изображения. Автоматически благодаря bootstrap реализуется защита
 от CSRF атаки и отображение формы.
 
-В папке templates создадим шаблон net.html для обработки форм.
+В папке templates создадим шаблон `net.html` для обработки форм.
 
+```
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 <!-- задаем заголовок страницы -->
@@ -519,9 +524,11 @@ return render_template('net.html',form=form,image_name=filename,neurodic=neurodi
 {% endif %}
 
 {% endblock %}
+```
 
 создадим в основной папке файл net.py
 
+```python
 import random
 # бибилиотека keras для НС
 import keras
@@ -563,43 +570,44 @@ input_shape=None, pooling=None, classes=1000)
 # учтите если там есть файлы не соответствующие изображениям или каталоги
 # возникнет ошибка
 def read_image_files(files_max_count,dir_name):
-files = os.listdir(dir_name)
-files_count = files_max_count
-if(files_max_count>len(files)): # определяем количество файлов не больше max
-files_count = len(files)
-image_box = [[]]*files_count
-for file_i in range(files_count): # читаем изображения в список
-image_box[file_i] = Image.open(dir_name+'/'+files[file_i]) # / ??
-return files_count, image_box
+    files = os.listdir(dir_name)
+    files_count = files_max_count
+    if(files_max_count>len(files)): # определяем количество файлов не больше max
+        files_count = len(files)
+    image_box = [[]]*files_count
+    for file_i in range(files_count): # читаем изображения в список
+        image_box[file_i] = Image.open(dir_name+'/'+files[file_i]) # / ??
+    return files_count, image_box
 
 # возвращаем результаты работы нейронной сети
 def getresult(image_box):
-files_count = len(image_box)
-images_resized = [[]]*files_count
-# нормализуем изображения и преобразуем в numpy
-for i in range(files_count):
-images_resized[i] = np.array(image_box[i].resize((height,width)))/255.
-images_resized = np.array(images_resized)
-# подаем на вход сети изображение в виде numpy массивов
-out_net = resnet.predict(images_resized)
-# декодируем ответ сети в один распознанный класс top=1 (можно больше классов)
-decode = decode_predictions(out_net, top=1)
-return decode
+    files_count = len(image_box)
+    images_resized = [[]]*files_count
+    # нормализуем изображения и преобразуем в numpy
+    for i in range(files_count):
+        images_resized[i] = np.array(image_box[i].resize((height,width)))/255.
+    images_resized = np.array(images_resized)
+    # подаем на вход сети изображение в виде numpy массивов
+    out_net = resnet.predict(images_resized)
+    # декодируем ответ сети в один распознанный класс top=1 (можно больше классов)
+    decode = decode_predictions(out_net, top=1)
+    return decode
 
 # заранее вызываем работу сети, так как работа с gpu требует времени
 # из-за инициализации библиотек
 fcount, fimage = read_image_files(1,'./static')
 decode = getresult(fimage)
-
+```
 Добавление капчи
 
 Создаем проверку google капчи. Для этого заходим по адресу https://www.google.com/recaptcha, затем выбираем
 admin console. Создаем ключи для капчи, label - localhost, выбираем капчу второй версии, добавляем два домена
 localhost и 127.0.0.1. Копируем ключи (Copy site key, Copy secret key) в
 
+```
 app.config['RECAPTCHA_PUBLIC_KEY'] ='______________________'
 app.config['RECAPTCHA_PRIVATE_KEY'] ='______________________'
-
+```
 
 ## Добавление API для классификации изображения
 
@@ -611,8 +619,9 @@ app.config['RECAPTCHA_PRIVATE_KEY'] ='______________________'
 
 Сделать тоже самое используя mime формат.
 
-Добавим в наш some_app.py следующий код.
+Добавим в наш `some_app.py` следующий код.
 
+```python
 from flask import request
 from flask import Response
 import base
@@ -622,39 +631,41 @@ import json
 # метод для обработки запроса от пользователя
 @app.route("/apinet",methods=['GET','POST'])
 def apinet():
-# проверяем что в запросе json данные
-if request.mimetype =='application/json':
-# получаем json данные
-data = request.get_json()
-# берем содержимое по ключу, где хранится файл
-# закодированный строкой base
-# декодируем строку в массив байт используя кодировку utf-
-# первые 128 байт ascii и utf-8 совпадают, потому можно
-filebytes = data['imagebin'].encode('utf-8')
-# декодируем массив байт base64 в исходный файл изображение
-cfile = base64.b64decode(filebytes)
-# чтобы считать изображение как файл из памяти используем BytesIO
-img = Image.open(BytesIO(cfile))
-decode = neuronet.getresult([img])
-neurodic = {}
-for elem in decode:
-neurodic[elem[0][1]] = str(elem[0][2])
-print(elem)
-# пример сохранения переданного файла
-# handle = open( _'_ ./static/f.png _'_ , _'_ wb _'_ )
-# handle.write(cfile)
-# handle.close()
-# преобразуем словарь в json строку
-ret = json.dumps(neurodic)
-# готовим ответ пользователю
-resp = Response(response=ret,
-status=200,
-mimetype="application/json")
-# возвращаем ответ
-return resp
+    # проверяем что в запросе json данные
+    if request.mimetype =='application/json':
+        # получаем json данные
+        data = request.get_json()
+        # берем содержимое по ключу, где хранится файл
+        # закодированный строкой base
+        # декодируем строку в массив байт используя кодировку utf-
+        # первые 128 байт ascii и utf-8 совпадают, потому можно
+        filebytes = data['imagebin'].encode('utf-8')
+        # декодируем массив байт base64 в исходный файл изображение
+        cfile = base64.b64decode(filebytes)
+        # чтобы считать изображение как файл из памяти используем BytesIO
+        img = Image.open(BytesIO(cfile))
+        decode = neuronet.getresult([img])
+        neurodic = {}
+        for elem in decode:
+            neurodic[elem[0][1]] = str(elem[0][2])
+            print(elem)
+        # пример сохранения переданного файла
+        # handle = open( _'_ ./static/f.png _'_ , _'_ wb _'_ )
+        # handle.write(cfile)
+        # handle.close()
+        # преобразуем словарь в json строку
+        ret = json.dumps(neurodic)
+        # готовим ответ пользователю
+        resp = Response(response=ret,
+        status=200,
+        mimetype="application/json")
+    # возвращаем ответ
+    return resp
+```
 
-Теперь как будет выглядеть наш client.py запрашивающий сервис, который мы создали.
+Теперь как будет выглядеть наш `client.py` запрашивающий сервис, который мы создали.
 
+```python
 # импортируем нужные модули
 import os
 from io import BytesIO
@@ -667,7 +678,8 @@ path = os.path.join('./static','image0008.png')
 
 # читаем файл и енкодируем его в строку base
 with open(path,'rb') as fh:
-img_data = fh.read()
+    img_data = fh.read()
+
 b64 = base64.b64encode(img_data)
 
 # создаем json словарь, который
@@ -676,24 +688,28 @@ b64 = base64.b64encode(img_data)
 jsondata = {'imagebin':b64.decode('utf-8')}
 res = requests.post('http://localhost:5000/apinet', json=jsondata)
 if res.ok:
-print(res.json())
+    print(res.json())
+```
 
 Можем все это теперь закоммитить на github. И подкрепить проверку на travis. Что должно быть у нас в итоге
 в папке flaskapp.
 
+```
 /flaskapp
-/static
-image0008.png
-/templates
-net.html
-simple.html
-some_app.py
-client.py
-net.py
-sh.st
+    /static
+        image0008.png
+    /templates
+        net.html
+        simple.html
+    some_app.py
+    client.py
+    net.py
+    sh.st
+```
 
 Реализуем commit и изменим содержимое YAML файла.
 
+```yml
 language: python
 before_install:
 
@@ -712,10 +728,12 @@ script:
 
 - cd flaskapp
 - ./st.sh
+```
 
 Если все нормально, то на travis-ci в конце будут такие строчки. Либо вместо web_site распознанный класс
-переданный вами в файле скрипта client.py.
+переданный вами в файле скрипта `client.py`.
 
+```
 [('n06359193','web_site', 0.9643341)]
 
 {'web_site':'0.9643341'}
@@ -727,7 +745,7 @@ script:
 [2020-04-30 07:39:08 +0000] [3624] [INFO] Worker exiting (pid: 3624)
 
 The command "./st.sh" exited with 0.
-
+```
 
 ## Протестируем наш проект с использованием системы тестирования.
 
@@ -745,6 +763,7 @@ The command "./st.sh" exited with 0.
 вариант предлагается взять различные прикладные области и возвращать данные в виде таблицы, списка,
 простого текста. Мы здесь рассмотрим только один шаблон как пример.
 
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="file.xslt" ?>
 <people>
@@ -759,9 +778,10 @@ The command "./st.sh" exited with 0.
 <work>Programmist</work>
 </man>
 </people>
-
+```
 Шаблон выглядит следующим образом:
 
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version = "1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/">
@@ -796,38 +816,44 @@ The command "./st.sh" exited with 0.
 
 </xsl:template>
 </xsl:stylesheet>
+```
 
-В файл some_app.py добавим наш новый api.
+В файл `some_app.py` добавим наш новый api.
 
+```python
 import lxml.etree as ET
 
 @app.route("/apixml",methods=['GET','POST'])
 def apixml():
-#парсим xml файл в dom
-dom = ET.parse("./static/xml/file.xml")
-#парсим шаблон в dom
-xslt = ET.parse("./static/xml/file.xslt")
-#получаем трансформер
-transform = ET.XSLT(xslt)
-#преобразуем xml с помощью трансформера xslt
-newhtml = transform(dom)
-#преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
-strfile = ET.tostring(newhtml)
-return strfile
+    #парсим xml файл в dom
+    dom = ET.parse("./static/xml/file.xml")
+    #парсим шаблон в dom
+    xslt = ET.parse("./static/xml/file.xslt")
+    #получаем трансформер
+    transform = ET.XSLT(xslt)
+    #преобразуем xml с помощью трансформера xslt
+    newhtml = transform(dom)
+    #преобразуем из памяти dom в строку, возможно, понадобится указать кодировку
+    strfile = ET.tostring(newhtml)
+    return strfile
+```
 
-В файле client.py добавим следующие строки для тестирования нового api.
+В файле `client.py` добавим следующие строки для тестирования нового api.
 
+```python
 try:
-r = requests.get('http://localhost:5000/apixml')
-print(r.status_code)
-if(r.status_code!=200):
-exit(1)
-print(r.text)
+    r = requests.get('http://localhost:5000/apixml')
+    print(r.status_code)
+    if(r.status_code!=200):
+        exit(1)
+    print(r.text)
 except:
-exit(1)
+    exit(1)
+```
 
-А файл st.sh изменим так, чтобы он возвращал нам ошибку в случае если процесс не будет выполнен.
+А файл `st.sh` изменим так, чтобы он возвращал нам ошибку в случае если процесс не будет выполнен.
 
+```shell
 gunicorn --bind 127.0.0.1:5000 wsgi:app & APP_PID=$!
 sleep 25
 echo start client
@@ -838,6 +864,7 @@ echo $APP_PID
 kill -TERM $APP_PID
 echo app code $APP_CODE
 exit $APP_CODE
+```
 
 Теперь у нас при выполнении данного скрипта в случае ошибок исполнения будет возвращаться код ошибки и
 commit не будет фиксироваться на github.
@@ -849,62 +876,65 @@ commit не будет фиксироваться на github.
 - pip3 install lxm
 
 Но при коммите у нас возникает ошибка, которая обусловлена тем, что мы использовали не очень хорошо
-спроектированную функцию в net.py, которая считывает все подряд, включая каталоги, кроме того, мы не
-обрабатываем никак try except на сервере. Заменим в файле net.py функцию:
+спроектированную функцию в `net.py`, которая считывает все подряд, включая каталоги, кроме того, мы не
+обрабатываем никак try except на сервере. Заменим в файле `net.py` функцию:
 
+```python
 def read_image_files(files_max_count,dir_name):
-files = [item.name for item in os.scandir(dir_name) if item.is_file()]
-files_count = files_max_count
-if(files_max_count>len(files)): # определяем количество файлов не больше max
-files_count = len(files)
-image_box = [[]]*files_count
-for file_i in range(files_count): # читаем изображения в список
-image_box[file_i] = Image.open(dir_name+'/'+files[file_i]) # / ??
-return files_count, image_box
+    files = [item.name for item in os.scandir(dir_name) if item.is_file()]
+    files_count = files_max_count
+    if files_max_count > len(files): # определяем количество файлов не больше max
+        files_count = len(files)
+    image_box = [[]]*files_count
+    for file_i in range(files_count): # читаем изображения в список
+        image_box[file_i] = Image.open(dir_name+'/'+files[file_i]) # / ??
+    return files_count, image_box
+```
 
-
-Загрузим на github новую версию net.py. Теперь все должно получиться, если нет, смотрим ошибки и пытаемся
+Загрузим на github новую версию `net.py`. Теперь все должно получиться, если нет, смотрим ошибки и пытаемся
 их исправить, пока commit не подтвердится.
 
 ## Деплой на heroku.
 
 Можно реализовать деплой непосредственно на heroku,
 
+```
 deploy:
 provider: heroku
 api_key:
 secure: "YOUR ENCRYPTED API KEY"
+```
 
 Правда необходимо получить heroku auth:token, это можно сделать, например, через командную строку и
 команду
 
-heroku auth:token, но для этого необходимо установить Command Line Interface Heroku https://devcenter.heroku.
-com/categories/command-line.
-
-или по адресу
-
-https://dashboard.heroku.com/account
+heroku auth:token, но для этого необходимо установить [Command Line Interface Heroku](https://devcenter.heroku.com/categories/command-line) или по адресу https://dashboard.heroku.com/account.
 
 При этом чтобы реализовать deploy на herokу желательно получить encrypt ключа с помощью консоли travis-ci,
 дабы никто не увидел вашего секретного ключа heroku. Если вам нестрашны возможности доступа со стороны к
 вашему аккаунту можете добавить ключ непосредственно в открытом виде в yaml файл на github в поле api_key.
 Получение ключа, но предварительно придется установить travis-cli.
 
+```shell
 $ travis encrypt YOUR_API_HEROKU_SECRET --org -r YOUR_GIT_ACCOUNT/YOUR_WEBPROJECT
+```
 
 При разработке желательно использовать стандартный buildpack для какого-то языка, клонировав его с офици-
 ального репозитория. Для python это, например:
 
+```shell
 $ git clone https://github.com/heroku/python-getting-started.git
+```
 
 Затем можно настроить свой проект на базе созданного, правда тут используется django.
 
 Но мы пойдем другим путем. Зарегистрируемся на сайте heroku и создадим приложение. В нашем приложении
 на github сделаем изменения. Heroku определяет наличие какого-либо типа приложения и поддержку языка
-на основе наличия определенных специализированный файлов. Например, для python это requirements.txt или
-setup.py или pipfile в корне нашего проекта вместе с YAML файлом. Добавим requirements.txt, следующего
+на основе наличия определенных специализированный файлов. Например, для python это `requirements.txt` или
+`setup.py` или pipfile в корне нашего проекта вместе с YAML файлом. Добавим `requirements.txt`, следующего
 содержания:
 
+```
 gunicorn==20.0.
 Flask==1.1.
 requests==2.23.
@@ -914,22 +944,25 @@ Pillow==6.2.
 tensorflow==2.0.
 Keras==2.3.
 lxml==4.3.
+```
 
 Как видите это те библиотеки, которые нам понадобятся при работе нашего приложения, heroku будет считывать
 данный файл при попытке build нашего приложения.
 
 Кроме того, мы должны добавить Procfile, где укажем запуск воркеров через gunicorn.
 
+```Procfile
 web: gunicorn wsgi:app -b 0.0.0.0:$PORT --chdir flaskapp
-
+```
 Порт указывается heroku.
 
 И runtime.txt где укажем, например версию python. Можете указать другую версию.
-
+```
 python-3.7.
+```
 
 Слегка перепишем yaml файл.
-
+```yml
 language: python
 python:
 
@@ -952,13 +985,8 @@ script:
 В нашем созданном приложении на heroku выберем вкладку deploy.
 
 ```
-Рис. 5: Получение api ключа на heroku
-```
 Выберете deploy метод Github.
 
-```
-Рис. 6: Привязка к деплою c github или системы интеграции
-```
 После чего реализуйте подключение к вашему аккаунту и присоединение к вашему проекту с flask.
 
 Во вкладке Automatic deploys укажете галочкой поле “Wait for CI to pass before deploy”, чтобы деплоймент
@@ -973,21 +1001,21 @@ script:
 Тестирование pytest остается на самостоятельное изучение.
 
 Если вам хочется просмотреть структуру папок на heroku нужно установить себе консольный клиент.
-
+```shell
 $ sudo snap install --classic heroku
-
+```
 или
-
+```shell
 $ curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 $ sudo apt-get install heroku
+```
 
 И воспользоваться командой.
-
+```shell
 $ heroku run bash --app YOUR_HEROKU_APP
+```
 
 Для просмотра логов можно воспользоваться коммандой.
-
+```shell
 $ heroku logs --tail --app YOUR_HEROKU_APP
-
-
-
+```

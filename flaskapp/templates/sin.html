@@ -12,7 +12,20 @@
 
 {% if selected_output %}
 <h2>Selected output:</h2>
-    {{ selected_output }}
+    <div id="output"></div>
+<script>
+    const dom = document,
+        outputBlock = dom.getElementById('output'),
+        decodeHtmlEntity = function(str) {
+            const txt = dom.createElement('textarea');
+            txt.innerHTML = str;
+            return txt.value;
+        },
+        htmlStr = `{{ selected_output }}`;
+
+    outputBlock.innerHTML =  decodeHtmlEntity(htmlStr);
+    console.log(htmlStr);
+</script>
 {% endif %}
 
 {% endblock %}
